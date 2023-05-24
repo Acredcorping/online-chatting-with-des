@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chat Room - 登录</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin-top: 150px;
+        }
+
+        .card {
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            box-shadow: 5px 5px 20px #aaa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Chat Room - 登录</h3>
+                </div>
+                <div class="card-body">
+                    <form id="login-form" action="/login/" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">用户名</label>
+                            <input type="text" class="form-control" name="username" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">密码</label>
+                            <input type="password" class="form-control" name="password" id="password" required>
+                        </div>
+                        <span class="text-danger" id="error-msg">{{ error }}</span>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px">登录
+                            </button>
+                        </div>
+                        <div class="text-center">
+                            <a href="{% url 'register' %}" class="btn btn-secondary"
+                               style="width: 100%; margin-top: 10px">注册</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
