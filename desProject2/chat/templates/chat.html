@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="{% static 'js/chat.js' %}"></script>
+    <title>聊天</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+
+<!-- 顶部菜单栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" style="margin-left: 10px">Chat Room</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/chat/">聊天</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/key/">密钥管理</a>
+                </li>
+            </ul>
+            <div class="navbar-nav">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        hello, {{ request.session.user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+{#                        <li><a class="dropdown-item" href="#">修改密码</a></li>#}
+{#                        <li>#}
+{#                            <hr class="dropdown-divider">#}
+{#                        </li>#}
+                        <li><a class="dropdown-item" href="/logout/">退出登录</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<!-- 聊天区域 -->
+<div class="container-fluid-chat flex-grow-1">
+    <div class="row h-100">
+        <!-- 左侧聊天列表 -->
+        <div class="col-md-3 bg-light chat-list h-100">
+            <ul class="list-group">
+                {% for friend in friends %}
+                    <li class="list-group-item d-flex align-items-center" id="{{ friend.obj.id }}">
+                        <div class="avatar me-3">
+                            <span class="initial">{{ friend.obj.username|first }}</span>
+                        </div>
+                        <span class="name">{{ friend.obj.username }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- 右侧聊天主体 -->
+        <div class="col-md-9 chat-body d-flex flex-column">
+            <div class="chat-message-wrapper">
+                <div id="chat-messages-container" class="border rounded p-3">
+                    <!-- 聊天消息将动态添加到这里 -->
+                    <div id="chat-messages" class="rounded p-3">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <input type="text" id="message-input" class="form-control" placeholder="Type a message...">
+                <button id="send-button" class="btn btn-primary mt-2">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="modal fade" id="checkSecretKey" tabindex="-1" aria-labelledby="checkSecretKeyTable" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="checkSecretKeyTable">输入密钥</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkSecretKeyForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="secretKey" class="col-form-label">密钥:</label>
+                            <input class="form-control" id="secretKey" name="secret_key"></input>
+                        </div>
+                        <span class="text-danger" id="error-msg" style="display: none"></span>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="sendCheck">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

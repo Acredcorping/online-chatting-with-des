@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>密钥管理</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/key.css' %}">
+    <script src="{% static 'js/key.js' %}"></script>
+
+
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" style="margin-left: 10px">Chat Room</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/chat/">聊天</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/key/">密钥管理</a>
+                </li>
+            </ul>
+            <div class="navbar-nav">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        hello, {{ request.session.user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+{#                        <li><a class="dropdown-item" href="#">修改密码</a></li>#}
+{#                        <li>#}
+{#                            <hr class="dropdown-divider">#}
+{#                        </li>#}
+                        <li><a class="dropdown-item" href="/logout/">退出登录</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="table-container">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">好友昵称</th>
+            <th scope="col">密钥</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for field in keys %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ field.obj.username }}</td>
+                <td>{{ field.key }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-grid gap-2 col-4 mx-auto">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewKey" type="button"
+                style="margin: 5px;">发送密钥申请
+        </button>
+        <button id="getApp" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkNewKeyApplication"
+                type="button" style="margin: 5px;">我收到的申请
+        </button>
+    </div>
+
+    <div class="modal fade" id="createNewKey" tabindex="-1" aria-labelledby="createNewKeyLable" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="createNewKeyLable">创建新的密钥</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="applicationForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username-createNewKey" class="col-form-label">用户名：</label>
+                            <input type="text" class="form-control" id="username-createNewKey" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="remarks-createNewKey" class="col-form-label">备注:</label>
+                            <textarea class="form-control" id="remarks-createNewKey" name="remark"></textarea>
+                        </div>
+                        <span class="text-danger" id="error-msg" style="display: none"></span>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="sendApp">发送申请</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="checkNewKeyApplication" tabindex="-1" aria-labelledby="checkNewKeyApplicationLable"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="checkNewKeyApplicationLable">我收到的申请</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <table class="table">
+                        <tbody id="myTableBody">
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+

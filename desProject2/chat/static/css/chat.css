@@ -1,0 +1,80 @@
+html, body {
+    height: 100%;
+}
+
+/* 聊天列表样式 */
+.chat-list {
+    overflow-y: auto;
+}
+
+/* 聊天主体样式 */
+.chat-body {
+    flex-grow: 1;
+    border-left: 1px solid #ccc;
+}
+
+.chat-message-wrapper {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+#chat-messages-container {
+  height: 100%;
+}
+
+
+.container-fluid-chat {
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-group-item {
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* 消息容器 */
+.message {
+    display: flex;
+    align-items: center;
+}
+
+/* 头像内的字母样式 */
+.initial {
+    font-size: 16px;
+    color: #fff;
+}
+
+/* 用户昵称样式 */
+.name {
+    font-weight: bold;
+}
+
+/* 发送时间样式 */
+.time {
+    color: #999;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* 分割线样式 */
+.message-divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+.content {
+    flex: 1;
+    word-break: break-all;
+    margin-left: 10px;
+}
